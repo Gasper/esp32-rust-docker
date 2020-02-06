@@ -1,5 +1,10 @@
 FROM ubuntu:latest
 
+ENV RUSTUP_HOME=/usr/local/rustup \
+    CARGO_HOME=/usr/local/cargo \
+    PATH=/usr/local/cargo/bin:$PATH \
+    RUST_VERSION=1.42.0
+
 # Install prerequisites
 RUN set -eux
 RUN apt-get update
@@ -34,6 +39,10 @@ COPY rustc.tar.gz .
 RUN tar -xzf rustc.tar.gz
 RUN rm rustc.tar.gz
 
+ENV XARGO_RUST_SRC=/usr/local/rust-xtensa/src \
+    RUSTC=/usr/local/rust-xtensa/stage2/bin/rustc \
+    RUSTDOC=/usr/local/rust-xtensa/stage2/bin/rustdoc
+
 # Install ESP tools
 WORKDIR /usr/local/xtensa-esp32-elf/
 COPY xtensa-esp32-elf.tgz .
@@ -41,5 +50,6 @@ COPY xtensa-esp32-elf.tgz .
 RUN tar -xzf xtensa-esp32-elf.tgz
 RUN rm xtensa-esp32-elf.tgz
 
+ENV PATH=$PATH:/usr/local/xtensa-esp32-elf/xtensa-esp32-elf/bin/
 
 ENTRYPOINT [ "bash" ]
