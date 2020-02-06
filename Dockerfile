@@ -52,4 +52,8 @@ RUN rm xtensa-esp32-elf.tgz
 
 ENV PATH=$PATH:/usr/local/xtensa-esp32-elf/xtensa-esp32-elf/bin/
 
+#Cleanup
+RUN apt-get remove -y --auto-remove wget
+RUN rm -rf /var/lib/apt/lists/*
+
 ENTRYPOINT [ "bash" ]
