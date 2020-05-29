@@ -11,7 +11,6 @@ RUN git clone -b v4.0.1 --recursive --depth 1 https://github.com/espressif/esp-i
 WORKDIR /tmp/esp-idf/
 RUN ./install.sh
 
-# ENTRYPOINT [ "bash" ]
 
 FROM ubuntu:latest AS compiler-stage
 
@@ -48,7 +47,6 @@ RUN python2.7 ./x.py build
 # Install xargo
 RUN cargo install xargo
 
-# ENTRYPOINT [ "bash" ]
 
 FROM ubuntu:latest AS final-stage
 
@@ -90,7 +88,7 @@ ENV XARGO_RUST_SRC=/usr/local/rust-xtensa/src \
     RUSTC=/usr/local/rust-xtensa/bin/rustc \
     RUSTDOC=/usr/local/rust-xtensa/bin/rustdoc \
     PATH=$PATH:/usr/local/esp-idf/xtensa-esp32-elf/esp-2019r2-8.2.0/xtensa-esp32-elf/bin/
-    
+
 # Cleanup
 RUN rm -rf /var/lib/apt/lists/*
 
@@ -98,33 +96,3 @@ RUN rm -rf /var/lib/apt/lists/*
 WORKDIR /home/workspace
 
 ENTRYPOINT [ "bash" ]
-
-# # Copy rustc compiler and its source
-# WORKDIR /usr/local/rust-xtensa/
-# COPY rustc.tar.gz .
-
-# RUN tar -xzf rustc.tar.gz
-# RUN rm rustc.tar.gz
-
-# ENV XARGO_RUST_SRC=/usr/local/rust-xtensa/src \
-#     RUSTC=/usr/local/rust-xtensa/stage2/bin/rustc \
-#     RUSTDOC=/usr/local/rust-xtensa/stage2/bin/rustdoc
-
-# # Install ESP tools
-# WORKDIR /usr/local/xtensa-esp32-elf/
-# COPY xtensa-esp32-elf.tgz .
-
-# RUN tar -xzf xtensa-esp32-elf.tgz
-# RUN rm xtensa-esp32-elf.tgz
-
-# ENV PATH=$PATH:/usr/local/xtensa-esp32-elf/xtensa-esp32-elf/bin/
-
-# #Cleanup
-# RUN apt-get remove -y --auto-remove wget
-# RUN rm -rf /var/lib/apt/lists/*
-
-# FROM ubuntu:latest AS rustc-stage
-
-# FROM ubuntu:latest AS final-stage
-
-
